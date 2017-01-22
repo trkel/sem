@@ -22,10 +22,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AlarmOnCmd.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="mycmd.py">
+    <Compile Include="Commands.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CmdQueue.py">

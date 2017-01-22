@@ -1,5 +1,6 @@
 import logging
 import CmdQueue
+import Commands
 
 log = logging.getLogger('SemBrain')
 
@@ -23,7 +24,7 @@ def initLogger():
     # add ch to logger
     log.addHandler(ch)
     
-    log.debug('debug message')
+    log.debug('debug a message')
     log.info('info message')
     log.warn('warn message')
     log.error('error message')
@@ -41,11 +42,15 @@ def main():
     
     
     while True:
-      c = raw_input("Enter Command: ")
-      if c == "e":
-        log.debug("trying to quit")
-        q.stop()
-        break
+        c = raw_input("Enter Command: ")
+      
+        if c == "a":
+            q.addCommand(Commands.AlarmOnCmd("alarm on", "10:00a"))
+
+        elif c == "e":
+            log.debug("trying to quit")
+            q.stop()
+            break
         
     
     

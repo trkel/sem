@@ -1,6 +1,6 @@
 import logging
 import Queue
-import cmd
+import Commands
 from threading import Thread
 from time import sleep
 
@@ -27,12 +27,13 @@ class CmdQueue:
 
         CmdQueue.log.info('ComdQueue Starting... complete')
 
-    def addCommand(arg):
-        self.q.put(arg)    
+    def addCommand(self, obj):
+        self.q.put(obj)    
 
     def stop(self):
         self.Running = False
         self.q.put("e")
+        self.thread.join()
     
 
     def queueProcessor(self, arg):
@@ -42,8 +43,8 @@ class CmdQueue:
             CmdQueue.log.debug('q = {}!'.format(self.q.qsize()))
             while not self.q.empty():
                 c = self.q.get()
-                if isinstance(c, mycmd):
-                    CmdQueue.log.info('CMD: {0}'.format(c))
+                if isinstance(c, Commands.cmd ):
+                    CmdQueue.log.info('CMD: {0}'.format(str(c)))
                 else:
                     CmdQueue.log.info('other: {0}'.format(c))
             
