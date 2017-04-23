@@ -1,8 +1,10 @@
 import logging
 import CmdQueue
-import Commands
+import elMsg
 
 log = logging.getLogger('SemBrain')
+
+
 
 def initLogger():
     # create logger
@@ -24,7 +26,7 @@ def initLogger():
     # add ch to logger
     log.addHandler(ch)
     
-    log.debug('debug a message')
+    log.debug('debug message')
     log.info('info message')
     log.warn('warn message')
     log.error('error message')
@@ -33,6 +35,7 @@ def initLogger():
 
 def main():
     
+
     initLogger()
     log.debug("settings init")
 
@@ -42,18 +45,18 @@ def main():
     
     
     while True:
-        c = raw_input("Enter Command: ")
-      
-        if c == "a":
-            q.addCommand(Commands.AlarmOnCmd("alarm on", "10:00a"))
-
-        elif c == "e":
+        c = input("Enter Command: ")
+        if c == "e":
             log.debug("trying to quit")
             q.stop()
             break
-        
-    
-    
+        elif c=="m":
+            log.debug("the m command was entered")
+            cmsg = elMsg.elMsg('NewEl_M_Msg')
+            q.addCommand(cmsg)
+            # no break - exit the main while true server loop
+
+   
 
 if __name__ == '__main__':
     main()
