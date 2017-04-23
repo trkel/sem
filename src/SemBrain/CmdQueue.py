@@ -1,8 +1,8 @@
 import logging
-import Queue
-import cmd
+from multiprocessing import Queue
 from threading import Thread
 from time import sleep
+from elMsg import elMsg
 
 class CmdQueue:
 
@@ -12,7 +12,7 @@ class CmdQueue:
         
         CmdQueue.log.info("CmdQueue created");        
         self.Running = False
-        self.q = Queue.Queue()   
+        self.myq = Queue()  
 
 
     def start(self):
@@ -27,22 +27,22 @@ class CmdQueue:
 
         CmdQueue.log.info('ComdQueue Starting... complete')
 
-    def addCommand(arg):
-        self.q.put(arg)    
+    def addCommand(self, arg):
+        self.myq.put(arg)    
 
     def stop(self):
         self.Running = False
-        self.q.put("e")
+        self.myq.put("e")
     
 
     def queueProcessor(self, arg):
         CmdQueue.log.info("queueProcessor enter")   
         self.Running = True
         while self.Running:
-            CmdQueue.log.debug('q = {}!'.format(self.q.qsize()))
-            while not self.q.empty():
-                c = self.q.get()
-                if isinstance(c, mycmd):
+            CmdQueue.log.debug('q = {}!'.format(self.myq.qsize()))
+            while not self.myq.empty():
+                c = self.myq.get()
+                if isinstance(c, elMsg):
                     CmdQueue.log.info('CMD: {0}'.format(c))
                 else:
                     CmdQueue.log.info('other: {0}'.format(c))
