@@ -1,9 +1,14 @@
+import sys
 import logging
 import CmdQueue
 import elMsg
+import os
+import time
+import io
+import SlackComms
+
 
 log = logging.getLogger('SemBrain')
-
 
 
 def initLogger():
@@ -34,21 +39,28 @@ def initLogger():
     
 
 def main():
-    
-
     initLogger()
     log.debug("settings init")
 
     log.debug('starting cmdQueue')
     q = CmdQueue.CmdQueue()
     q.start()
+
+    sl = SlackComms.SlackComms(q)
+    sl.start()
     
     
     while True:
-        c = input("Enter Command: ")
+        print ("Enter Command: ")
+        # stdin.readline is used rather than input() because it'll be run over ssh. 
+        # and there is funky stuff with buffering lines over ssh
+        c = sys.stdin.readline()
+        c = c.strip()
+
+        # where the command will get parsed at the top level
         if c == "e":
             log.debug("trying to quit")
-            q.stop()
+            #q.stop()
             break
         elif c=="m":
             log.debug("the m command was entered")
