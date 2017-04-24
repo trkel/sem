@@ -67,7 +67,7 @@ class SlackComms(object):
                            ".\\tempFiles\\Untitled.png",
                            self.BOT_TOKEN, 
                            channel,
-                           "my custom title)
+                           "my custom title")
 
 
 

@@ -31,6 +31,9 @@
     <Compile Include="CmdQueue.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ImageAcq.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="SemBrain.py" />
     <Compile Include="SlackComms.py">
       <SubType>Code</SubType>

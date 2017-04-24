@@ -6,7 +6,10 @@ import os
 import time
 import io
 import SlackComms
-
+import ImageAcq
+import uuid
+import cv2
+from cv2 import *
 
 log = logging.getLogger('SemBrain')
 
@@ -41,6 +44,11 @@ def initLogger():
 def main():
     initLogger()
     log.debug("settings init")
+
+    cam = ImageAcq.ImageAcq()
+    filename = str(uuid.uuid4())[:8] + ".png"
+    cam.takePicture(filename)
+
 
     log.debug('starting cmdQueue')
     q = CmdQueue.CmdQueue()
