@@ -25,19 +25,45 @@
     <Compile Include="AlarmOnCmd.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Dog.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Drivers\BaseServo.py" />
+    <Compile Include="Drivers\ServoEnums.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Drivers\ServoSG90.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Drivers\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="elMsg.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CmdQueue.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Factory\ServoFactory.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ImageAcq.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MsgServo.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Pet.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SemBrain.py" />
     <Compile Include="SlackComms.py">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Drivers\" />
+    <Folder Include="Factory\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

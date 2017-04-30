@@ -1,6 +1,6 @@
 class elMsg(object):
     """description of class"""
-    Name = 'base'
+
     def __init__(self, name):
         self.Name = name
 

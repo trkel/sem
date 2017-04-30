@@ -2,12 +2,16 @@ import sys
 import logging
 import CmdQueue
 import elMsg
+from MsgServo import *
 import os
 import time
 import io
 import SlackComms
 import ImageAcq
 import uuid
+import Dog
+
+#sudo apt-get install libopencv-dev python-opencv
 import cv2
 from cv2 import *
 
@@ -72,7 +76,7 @@ def main():
             break
         elif c=="m":
             log.debug("the m command was entered")
-            cmsg = elMsg.elMsg('NewEl_M_Msg')
+            cmsg = MsgElServo("new servo", "E1", "open")
             q.addCommand(cmsg)
             # no break - exit the main while true server loop
 
