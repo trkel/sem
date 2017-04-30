@@ -9,7 +9,7 @@ import io
 import SlackComms
 import ImageAcq
 import uuid
-import Dog
+from MsgPic import *
 
 #sudo apt-get install libopencv-dev python-opencv
 #import cv2
@@ -61,7 +61,9 @@ def main():
     sl = SlackComms.SlackComms(q)
     sl.start()
     
-    
+    q.setCommInterface(sl)
+
+
     while True:
         print ("Enter Command: ")
         # stdin.readline is used rather than input() because it'll be run over ssh. 
@@ -76,11 +78,11 @@ def main():
             break
         elif c=="m":
             log.debug("the m command was entered")
-            cmsg = MsgElServo("new servo", "E1", ServoAction.Close)
+            cmsg = MsgPic("custom name", "take pic", "sammypic.png")
             q.addCommand(cmsg)
             # no break - exit the main while true server loop
         elif c=="n":
-            cmsg = MsgElServo("new servo", "E1", ServoAction.Open)
+            cmsg = MsgElServo("new servo", ServoAction.Open, "E1")
             q.addCommand(cmsg)
    
 

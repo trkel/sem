@@ -25,9 +25,6 @@
     <Compile Include="AlarmOnCmd.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Dog.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Drivers\BaseServo.py" />
     <Compile Include="Drivers\ServoEnums.py">
       <SubType>Code</SubType>
@@ -44,16 +41,19 @@
     <Compile Include="CmdQueue.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Factory\CameraFactory.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Factory\ServoFactory.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ImageAcq.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MsgServo.py">
+    <Compile Include="MsgPic.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Pet.py">
+    <Compile Include="MsgServo.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SemBrain.py" />

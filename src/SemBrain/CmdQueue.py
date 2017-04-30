@@ -6,6 +6,8 @@ from elMsg import elMsg
 from MsgServo import *
 from Drivers.ServoEnums import *
 from Factory.ServoFactory import *
+from Factory.CameraFactory import *
+from MsgPic import *
 
 class CmdQueue:
 
@@ -37,11 +39,14 @@ class CmdQueue:
         self.Running = False
         self.myq.put("e")
     
+    def setCommInterface(self, comms):
+        self.Comms = comms
 
     def queueProcessor(self, arg):
         CmdQueue.log.info("queueProcessor enter")   
         self.Running = True
         servoFactory = ServoFactory()
+        cameraFactory = CameraFactory()
         while self.Running:
             CmdQueue.log.debug('q = {}!'.format(self.myq.qsize()))
             while not self.myq.empty():
@@ -51,7 +56,10 @@ class CmdQueue:
                 elif isinstance(c, MsgElServo):
                     CmdQueue.log.info('CMD>Servo {0}'.format(c))
                     servoFactory.ExecuteCommand(c)
-
+                elif isinstance(c, MsgPic):
+                    CmdQueue.log.info('CMD>Pic {0}'.format(c))
+                    cameraFactory.ExecuteCommand(c.PicFilename)
+                    self.Comms.PushPic(c.PicFilename)
             
             sleep(1)     
     

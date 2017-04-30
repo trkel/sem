@@ -3,7 +3,7 @@ from Drivers.ServoEnums import *
 class MsgElServo(object):
     """description of class"""
 
-    def __init__(self, name, servo, action):
+    def __init__(self, name, action, servo):
         self.Name = name
         self.Servo = servo
         self.Action = action

@@ -7,9 +7,14 @@ from time import sleep
 from slackclient import SlackClient
 import CmdQueue
 import elMsg
+from Drivers.ServoEnums import *
+from MsgServo import *
+from MsgPic import *
+import os
+PIC_COMMANDS = ["take"]
+SERVO_COMMANDS= ["open", "close", "reset"]
 
-EXAMPLE_COMMAND = "do"
-
+PIC_PATH = "sammypic.png"
 
 class SlackComms(object):
     """interface to work with slack"""
@@ -17,12 +22,14 @@ class SlackComms(object):
     log = logging.getLogger('SlackComms')
     READ_WEBSOCKET_DELAY = 1
 
+    def PushPic(self, filepath):
+        SlackComms.log.debug("cwd {}".format(os.getcwd()))
+        self.upload_file(filepath, filepath, self.BOT_TOKEN, self.MyChannel, "uploaded pic" )
 
     def upload_file(self, filename, path, token, channels, title):
         '''
         upload a long text as a file
         '''
-        #ff = io.BytesIO(str.encode(path))
         ff = open(path, 'rb').read()
         SlackComms.log.debug("Length is ", len(ff))
         ret = self.slack_client.api_call("files.upload", 
@@ -52,23 +59,28 @@ class SlackComms(object):
             are valid commands. If so, then acts on the commands. If not,
             returns back what it needs for clarification.
         """
-        response = "Not sure what you mean. Use the *" + EXAMPLE_COMMAND + \
-                   "* command with numbers, delimited by spaces."
-        self.slack_client.api_call("chat.postMessage", channel=channel,
-                              text=response, as_user=True)
-    
-        if command.startswith(EXAMPLE_COMMAND):
-            cmsg = elMsg.elMsg(command)
+        self.MyChannel = channel
+        if(any(word in command for word in SERVO_COMMANDS)):
+            if(command.lower().startswith("open")):
+                cmsg = MsgElServo(command, ServoAction.Open, "E1")
+            elif(command.lower().startswith("close")):
+                cmsg = MsgElServo(command, ServoAction.Close, "E1")            
+            elif(command.lower().startswith("reset")):
+                cmsg = MsgElServo(command, ServoAction.ServoReset, "*")            
+
             self.CommandQueue.addCommand(cmsg)
+            self.slack_client.api_call("chat.postMessage", channel=channel,
+                        text="Command Running", as_user=True)
+        elif(any(word in command for word in PIC_COMMANDS)):
+            cmsg = MsgPic("custom name", command, PIC_PATH)
+            self.CommandQueue.addCommand(cmsg)
+            self.slack_client.api_call("chat.postMessage", channel=channel,
+                        text="Command Running", as_user=True)
 
-            if("pic" in command):
-                
-                self.upload_file("Untitled.png", 
-                           ".\\tempFiles\\Untitled.png",
-                           self.BOT_TOKEN, 
-                           channel,
-                           "my custom title")
-
+        else:
+            response = "Unknown command >" + command + "<"
+            self.slack_client.api_call("chat.postMessage", channel=channel,
+                        text=response, as_user=True)
 
 
     def parse_slack_output(self, slack_rtm_output):
@@ -89,7 +101,7 @@ class SlackComms(object):
     def __init__(self, cmdqueue):
         SlackComms.log.info("SlackComms init")
         self.CommandQueue = cmdqueue
-
+        self.MyChannel = ""
         #this can be set in windows Environment variables (make sure to logout to apply)
         #or can be set in linux: 
         if(("SLACK_BOT_TOKEN" in os.environ) and ("SLACK_BOT_UID" in os.environ)):
@@ -119,7 +131,7 @@ class SlackComms(object):
 
     def slackProcessor(self, args):
         SlackComms.log.info("slackProcessor entered")
-       
+
         self.Running = True
         
         self.BOT_NAME = 'semmy'
@@ -141,6 +153,7 @@ class SlackComms(object):
                 SlackComms.log.info("StarterBot connected and running!")
                 while self.Running:
                     command, channel = self.parse_slack_output(self.slack_client.rtm_read())
+                    
                     if command and channel:
                         self.handle_command(command, channel)
                         sleep(self.READ_WEBSOCKET_DELAY)
