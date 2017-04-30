@@ -5,7 +5,7 @@ from time import sleep
 from elMsg import elMsg
 from MsgServo import *
 from Drivers.ServoEnums import *
-import Factory.ServoFactory
+from Factory.ServoFactory import *
 
 class CmdQueue:
 
@@ -41,7 +41,7 @@ class CmdQueue:
     def queueProcessor(self, arg):
         CmdQueue.log.info("queueProcessor enter")   
         self.Running = True
-        servoFactory = ServoFactory.ServoFactory()
+        servoFactory = ServoFactory()
         while self.Running:
             CmdQueue.log.debug('q = {}!'.format(self.myq.qsize()))
             while not self.myq.empty():

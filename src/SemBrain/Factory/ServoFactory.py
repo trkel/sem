@@ -2,49 +2,55 @@ import Drivers.ServoSG90
 from MsgServo import *
 from Drivers.ServoEnums import *
 from enum import Enum
+import logging
 
 class ServoFactory(object):
     """description of class"""
-    log = logging.getLogger('ServoFactory')
+    log = logging.getLogger('SemBrain')
 
     def __init__(self):
-        self.log = logging.getLogger('ServoFactory.init')
+        ServoFactory.log.info('ServoFactory.init')
+        print ("servo factory init")
 
-
-    def OpenServo(servo):
-        if(trim(servo).strip().lower() == "E1".strip().lower()):
-            Servo_E1 = ServoSG90.ServoSG90(23, 50, 2.5, 11.5, 0, 180)
+    def OpenServo(self, servo):
+        ServoFactory.log.info("Opening servo {0}".format(servo))
+        if(servo.strip().lower() == "E1".strip().lower()):
+            Servo_E1 = Drivers.ServoSG90.ServoSG90(23, 50, 2.5, 11.5, 0, 180)
             Servo_E1.SetAngle(180)
             Servo_E1.Stop()
-        elif(trim(servo).strip().lower() == "L1".strip().lower()):
-            Servo_L1 = ServoSG90.ServoSG90(22, 50, 2.5, 11.5, 0, 180)
+        elif(servo.strip().lower() == "L1".strip().lower()):
+            Servo_L1 = Drivers.ServoSG90.ServoSG90(22, 50, 2.5, 11.5, 0, 180)
             Servo_L1.SetAngle(180)
             Servo_L1.Stop()
 
-    def CloseServo(servo):
-        if(trim(servo).strip().lower() == "E1".strip().lower()):
-            Servo_E1 = ServoSG90.ServoSG90(23, 50, 2.5, 11.5, 0, 180)
+    def CloseServo(self, servo):
+        ServoFactory.log.info("Closing servo {0}".format(servo))
+        if(servo.strip().lower() == "E1".strip().lower()):
+            Servo_E1 = Drivers.ServoSG90.ServoSG90(23, 50, 2.5, 11.5, 0, 180)
             Servo_E1.SetAngle(0)
             Servo_E1.Stop()
-        elif(trim(servo).strip().lower() == "L1".strip().lower()):
-            Servo_L1 = ServoSG90.ServoSG90(22, 50, 2.5, 11.5, 0, 180)
+        elif(servo.strip().lower() == "L1".strip().lower()):
+            Servo_L1 = Drivers.ServoSG90.ServoSG90(22, 50, 2.5, 11.5, 0, 180)
             Servo_L1.SetAngle(0)
             Servo_L1.Stop()
 
     def ExecuteCommand(self, cmd):
-        if(isinstance(cmd, MsgServo) == False):
+        print ("execute cmd")
+        ServoFactory.log.info("trying to execute command")
+        if(isinstance(cmd, MsgElServo) == False):
             return False
-
+        ServoFactory.log.info("Pass 1")
         if(cmd.Action == ServoAction.Open):
-            OpenServo(cmd.Servo)
+            self.OpenServo(cmd.Servo)
         elif(cmd.Action == ServoAction.Close):
-            CloseServo(cmd.Servo)
+            self.CloseServo(cmd.Servo)
         elif(cmd.Action == ServoAction.ServoSet):
-            CloseServo("E1")
-            CloseServo("L1")
+            self.CloseServo("E1")
+            self.CloseServo("L1")
         elif(cmd.Action == ServoAction.ServoClear):
-            OpenServo("E1")
-            OpenServo("L1")
+            self.OpenServo("E1")
+            self.OpenServo("L1")
+        ServoFactory.log.info("Pass 2")
 
 
 

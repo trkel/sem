@@ -12,8 +12,8 @@ import uuid
 import Dog
 
 #sudo apt-get install libopencv-dev python-opencv
-import cv2
-from cv2 import *
+#import cv2
+#from cv2 import *
 
 log = logging.getLogger('SemBrain')
 
@@ -72,14 +72,16 @@ def main():
         # where the command will get parsed at the top level
         if c == "e":
             log.debug("trying to quit")
-            #q.stop()
+            q.stop()
             break
         elif c=="m":
             log.debug("the m command was entered")
-            cmsg = MsgElServo("new servo", "E1", "open")
+            cmsg = MsgElServo("new servo", "E1", ServoAction.Close)
             q.addCommand(cmsg)
             # no break - exit the main while true server loop
-
+        elif c=="n":
+            cmsg = MsgElServo("new servo", "E1", ServoAction.Open)
+            q.addCommand(cmsg)
    
 
 if __name__ == '__main__':
